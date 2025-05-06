@@ -1,0 +1,50 @@
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+### Build ###
+/build/
+/target/
+
+### Gradle ###
+.gradle/
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle/
+gradle-app.setting
+*.log
+
+### VS Code ###
+.vscode/
+.history/
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
+logs/
+*.tmp
+
+### Protobuf (gRPC) – wenn generiert im Projektordner ###
+**/*_pb2*.py
+**/*.pb.go
+**/*.pb.cc
+**/*.pb.h
+**/*.pb.c
+**/*.pb.java
+
+### Test Coverage ###
+jacoco.exec
+
+### Environment Config ###
+.env
+.env.local

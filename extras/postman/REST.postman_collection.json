@@ -1,0 +1,113 @@
+{
+	"info": {
+	  "name": "REST",
+	  "description": "REST-Schnittstelle",
+	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+	  {
+		"name": "Suche mit ID",
+		"item": [
+		  {
+			"name": "Vorhandene Bestellung ORD123",
+			"event": [
+			  {
+				"listen": "test",
+				"script": {
+				  "exec": [
+					"pm.test('Statuscode 200', () => {\r",
+					"    pm.response.to.have.status(200);\r",
+					"});\r",
+					"pm.test('Content-Type application/json', () => {\r",
+					"    const contentType = pm.response.headers.get('Content-Type');\r",
+					"    pm.expect(contentType).to.include('application/json');\r",
+					"});\r",
+					"pm.test('Prüfe orderID', () => {\r",
+					"    const body = pm.response.json();\r",
+					"    pm.expect(body.orderID).to.eql('ORD123');\r",
+					"});"
+				  ],
+				  "type": "text/javascript"
+				}
+			  }
+			],
+			"protocolProfileBehavior": {
+			  "disabledSystemHeaders": {
+				"accept": true
+			  },
+			  "protocolVersion": "http2"
+			},
+			"request": {
+			  "method": "GET",
+			  "header": [
+				{
+				  "key": "Accept",
+				  "value": "application/json"
+				}
+			  ],
+			  "url": {
+				"raw": "{{api_url}}/ORD123",
+				"host": [
+				  "{{api_url}}"
+				],
+				"path": [
+				  "ORD123"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  },
+	  {
+		"name": "Neue Bestellung anlegen",
+		"item": [
+		  {
+			"name": "POST Bestellung ORD124",
+			"event": [
+			  {
+				"listen": "test",
+				"script": {
+				  "exec": [
+					"pm.test('Statuscode 200 oder 201', () => {\r",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+					"});\r",
+					"pm.test('Content-Type application/json', () => {\r",
+					"    const contentType = pm.response.headers.get('Content-Type');\r",
+					"    pm.expect(contentType).to.include('application/json');\r",
+					"});\r",
+					"pm.test('orderID = ORD124', () => {\r",
+					"    const jsonData = pm.response.json();\r",
+					"    pm.expect(jsonData.orderID).to.eql('ORD124');\r",
+					"});"
+				  ],
+				  "type": "text/javascript"
+				}
+			  }
+			],
+			"request": {
+			  "method": "POST",
+			  "header": [
+				{
+				  "key": "Content-Type",
+				  "value": "application/json"
+				}
+			  ],
+			  "body": {
+				"mode": "raw",
+				"raw": "{\n  \"orderID\": \"ORD124\",\n  \"customerID\": \"CUST789\",\n  \"eMail\": \"neukunde@example.com\",\n  \"productID\": \"PROD999\",\n  \"quantity\": 2,\n  \"address\": \"Beispielweg 3, 54321 Hamburg\",\n  \"orderDate\": \"2025-05-01\",\n  \"deliveryStatus\": \"Processing\",\n  \"deliveryDate\": \"2025-05-05\",\n  \"paymentMethod\": \"PayPal\"\n}"
+			  },
+			  "url": {
+				"raw": "{{api_url}}",
+				"host": [
+				  "{{api_url}}"
+				]
+			  }
+			},
+			"response": []
+		  }
+		]
+	  }
+	]
+  }
+  
