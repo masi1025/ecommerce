@@ -21,7 +21,7 @@ import static com.ecommerce.controller.BestellungGetController.API_PATH;
     static final String API_PATH = "api";
 
     
-    private static final String ID_PATTERN = "ORD\\d+";
+    //private static final String ID_PATTERN = "ORD\\d+";
 
     //private static final String customerID_PATH = "/customerID";
 

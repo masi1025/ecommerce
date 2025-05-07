@@ -35,6 +35,7 @@ public class Bestellung{
     this.paymentMethod = paymentMethod;
 
    }
+   public Bestellung(){}
 
  public String getOrderID(){
         return orderID;

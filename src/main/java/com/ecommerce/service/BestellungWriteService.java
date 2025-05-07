@@ -6,6 +6,7 @@ import com.ecommerce.repository.BestellungRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import com.ecommerce.RabbitMQ.producerVonBestellung;
 
 @Service
 public class BestellungWriteService {
@@ -13,11 +14,14 @@ public class BestellungWriteService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BestellungWriteService.class);
 
     private final BestellungRepository repo;
+    
+    private final producerVonBestellung producer;
 
     
     
-    BestellungWriteService(final BestellungRepository repo) {
+    BestellungWriteService(final BestellungRepository repo, final producerVonBestellung producer) {
         this.repo = repo;
+        this.producer = producer;
     }
 
     public Bestellung create(final Bestellung bestellung) {
@@ -26,7 +30,9 @@ public class BestellungWriteService {
      
         final var BestellungDB = repo.create(bestellung);
         LOGGER.debug("create: {}", BestellungDB);
+        producer.sendOrderToCrm(bestellung);
         return BestellungDB;
+    
     }
 
     
