@@ -1,7 +1,12 @@
 package com.ecommerce.entity;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 public class Bestellung{
+
+       @SuppressWarnings("unused")
+       private static final long serialVersionUID = 1L;// Wird für die Serialisierung benötigt
+
     private String orderID;
     private String customerID;
     private String eMail;
