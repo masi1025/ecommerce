@@ -1,22 +1,39 @@
 package com.ecommerce.RabbitMQ;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Component;
+
 import com.ecommerce.entity.Bestellung;
+import com.ecommerce.entity.Produkt;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class producerVonBestellung {
 
-    private final RabbitTemplate rabbitTemplate;
+    private static final String EXCHANGE_NAME = "ecommerce-to-crm-exchange";
+    private static final String ROUTING_KEY = "crm.routing.key";
 
-    public static final String EXCHANGE_NAME = RabbitMQConfig.EXCHANGE_NAME;
-    public static final String ROUTING_KEY = RabbitMQConfig.ROUTING_KEY;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
-    public producerVonBestellung(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
+    public void sendOrderToCrm(Bestellung bestellung, Produkt produkt) {
+        try {
+            BestellungMessage message = new BestellungMessage(
+                bestellung.getOrderID(),
+                bestellung.getOrderDate(),
+                bestellung.getProductID(),
+                bestellung.getQuantity(),
+                bestellung.getCustomerID(),
+                produkt.getPrice(),
+                bestellung.getDeliveryStatus().getValue()
+            );
 
-    public void sendOrderToCrm(Bestellung bestellung) {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, bestellung);
-        System.out.println("CRM Message sent: " + bestellung.getOrderID());
+            // JSON-Nachricht erzeugen
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, message);
+
+            System.out.println("Nachricht erfolgreich gesendet an RabbitMQ.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

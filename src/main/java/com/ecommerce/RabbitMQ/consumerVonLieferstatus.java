@@ -15,10 +15,15 @@ public class consumerVonLieferstatus {
         this.orderService = orderService;
     }
 
-    @RabbitListener(queues = "erp-to-ecommerce-queue")
+    @RabbitListener(
+      queues = RabbitConfig.QUEUE_NAME,
+      containerFactory = "rabbitListenerContainerFactory" 
+    )
     public void receiveStatusUpdate(DeliveryStatusMessage message) {
         System.out.println("Received ERP update for Order: " + message.getOrderId());
-        orderService.handleStatusUpdateFromErp(message.getOrderId(), message.getStatus());
+        orderService.handleStatusUpdateFromErp(
+            message.getOrderId(), message.getStatus()
+        );
     }
 
 }
