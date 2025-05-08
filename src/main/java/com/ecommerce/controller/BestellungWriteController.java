@@ -1,5 +1,6 @@
 package com.ecommerce.controller;
 import com.ecommerce.controller.BestellungDTO.OnCreate;
+import com.ecommerce.gRPC.OrderClient;
 import com.ecommerce.service.BestellungWriteService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.slf4j.Logger;
@@ -51,6 +52,10 @@ class BestellungWriteController {
         final var bestellung = service.create(bestellungInput);
         final var baseUri = uriHelper.getBaseUri(request).toString();
         final var location = URI.create(baseUri + '/' + bestellung.getOrderID());
+        
+        //Bestell-Objekt über gRPC-Schnittstelle an ERP-System weiterleiten
+        OrderClient.sendOrderRequest(bestellung);
+
         return created(location).build();
     }
 

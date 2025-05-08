@@ -286,7 +286,11 @@ val detektCfg: Configuration by configurations.creating
 // https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_separation
 dependencies {
     
-    implementation ("org.springframework.boot:spring-boot-starter-amqp")    
+    implementation ("org.springframework.boot:spring-boot-starter-amqp")  
+    implementation ("io.grpc:grpc-netty-shaded:1.63.0")
+    implementation ("io.grpc:grpc-protobuf:1.63.0")
+    compileOnly ("org.apache.tomcat:annotations-api:6.0.53")
+    implementation ("io.grpc:grpc-stub:1.63.0")  
     //implementation(platform(libs.slf4j.bom))
     //implementation(platform(libs.log4j.bom))
     if (useObservability) {
